@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Presentación Proyecto NATU</title>
+    <style>
+        /* --- ESTILOS GENERALES --- */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #2c3e35; /* Verde oscuro y terroso */
+            color: #e8e8e8; /* Blanco roto para mejor legibilidad */
+            overflow: hidden;
+        }
+
+        .presentation-container {
+            width: 100vw;
+            height: 100vh;
+            position: relative;
+        }
+
+        .slide {
+            width: 100%;
+            height: 100%;
+            padding: 50px;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background-size: cover;
+            background-position: center;
+            position: absolute;
+            top: 0;
+            left: 0;
+        }
+
+        .slide.active {
+            display: flex;
+            animation: fadeIn 0.5s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            font-size: 4em;
+            margin-bottom: 15px;
+            color: #d4a574; /* Terracota/ocre cálido */
+            text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.4);
+            font-weight: 700;
+        }
+
+        h2 {
+            font-size: 2.8em;
+            margin-bottom: 30px;
+            color: #ffffff;
+            font-weight: 600;
+        }
+
+        h3 {
+            font-size: 1.8em;
+            margin-bottom: 15px;
+            color: #d4a574; /* Terracota/ocre cálido */
+            font-weight: 600;
+        }
+
+        p, li {
+            font-size: 1.4em;
+            max-width: 900px;
+            line-height: 1.7;
+            margin-bottom: 15px;
+            font-weight: 400;
+        }
+        
+        strong {
+            color: #d4a574; /* Resaltado en el mismo color principal */
+            font-weight: 600;
+        }
+
+        ul {
+            list-style: none;
+            text-align: left;
+            max-width: 900px;
+        }
+
+        ul li {
+            margin-bottom: 10px;
+            padding-left: 1.2em;
+        }
+
+        ul li::before {
+            content: "▶";
+            color: #a4a478; /* Verde oliva/salvia para los marcadores */
+            font-weight: bold;
+            display: inline-block;
+            width: 1em;
+            margin-left: -1.2em;
+        }
+
+        .authors {
+            margin-top: 20px;
+            font-size: 1.2em;
+            color: #b0b0b0;
+            font-weight: 300;
+        }
+
+        /* --- ESTILOS ESPECÍFICOS --- */
+        
+        /* DOFA Slide */
+        .dofa-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            height: 60vh;
+            margin-top: 20px;
+        }
+        .dofa-quadrant {
+            border: 2px solid #d4a574;
+            padding: 25px;
+            border-radius: 12px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        .dofa-quadrant:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+        }
+        .dofa-quadrant h3 {
+            text-align: center;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        .dofa-quadrant ul {
+            font-size: 0.9em;
+        }
+        .dofa-quadrant.positive {
+            background-color: rgba(212, 165, 116, 0.1); /* Fondo sutil con color principal */
+        }
+        .dofa-quadrant.negative {
+            background-color: rgba(60, 60, 60, 0.2); /* Fondo gris oscuro para contraste */
+            border-color: #888;
+        }
+        .dofa-quadrant.negative h3 {
+            color: #aaa;
+        }
+        
+        /* Context Slide */
+        .data-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            width: 100%;
+            max-width: 1000px;
+            margin-top: 20px;
+            text-align: left;
+        }
+        .data-box {
+            background-color: rgba(164, 164, 120, 0.1); /* Fondo con color secundario */
+            border-left: 5px solid #a4a478;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
+        .data-box h4 {
+            color: #ffffff;
+            margin-bottom: 10px;
+            font-size: 1.3em;
+            font-weight: 600;
+        }
+        .data-box p {
+            font-size: 1.1em;
+            margin-bottom: 0;
+        }
+
+        /* --- NAVEGACIÓN --- */
+        .nav-hint {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(44, 62, 53, 0.8); /* Fondo más oscuro pero con el tono principal */
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            color: #b0b0b0;
+            font-weight: 300;
+        }
+        .slide-counter {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: rgba(212, 165, 116, 0.3); /* Contador con color principal */
+            padding: 10px 15px;
+            border-radius: 10px;
+            font-size: 0.9em;
+            font-weight: 600;
+            color: #d4a574;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="presentation-container">
+
+        <!-- Diapositiva 1: Título -->
+        <div class="slide active" id="slide1">
+            <h1>Mapa Interactivo de Terremotos en Colombia</h1>
+            <h2>Visualización en Tiempo Real e Información Histórica</h2>
+            <p>Sofia López y Mateo Lastra</p>
+        </div>
+
+        <!-- Diapositiva 2: Planteamiento del Problema -->
+        <div class="slide" id="slide2">
+            <h2>Planteamiento Del Problema</h2>
+            <p>En Colombia, aunque se registran miles de sismos cada año, la información no está organizada en una plataforma que sea clara, interactiva y educativa para el público.</p>
+            <p>Actualmente los datos se encuentran en sitios como el Servicio Geológico Colombiano (SGC) o el USGS, pero en formatos técnicos y poco accesibles.</p>
+            <p>Además, los terremotos históricos que marcaron al país no están integrados en un espacio visual y educativo.</p>
+        </div>
+
+        <!-- NUEVA DIAPOSITIVA 3: Contexto Sísmico -->
+        <div class="slide" id="slide3">
+            <h2>Contexto Sísmico en Colombia: Datos que Motivan el Proyecto</h2>
+            <p>Colombia es uno de los países con mayor actividad sísmica en la región, debido a la convergencia de las placas tectónicas de Nazca, Suramericana y Caribe.</p>
+            
+            <div class="data-grid">
+                <div class="data-box">
+                    <h4>📈 Actividad Constante</h4>
+                    <p>El SGC registra un promedio de <strong>2,500 sismos al año</strong>. Aunque la mayoría son imperceptibles, la amenaza de eventos mayores es permanente.</p>
+                </div>
+                <div class="data-box">
+                    <h4>🏛️ Impacto Histórico</h4>
+                    <p>Eventos devastadores han marcado nuestra historia reciente, dejando miles de víctimas y pérdidas económicas inmensas.</p>
+                </div>
+                <div class="data-box">
+                    <h4>⚡ Terremoto de Armenia (1999)</h4>
+                    <p>Magnitud <strong>6.2 Mw</strong>. Más de <strong>1,000 muertos</strong> y destrucción del 60% del casco urbano de Armenia y otros municipios del Eje Cafetero.</p>
+                </div>
+                <div class="data-box">
+                    <h4>🏚️ Terremoto de Popayán (1983)</h4>
+                    <p>Magnitud <strong>5.5 Mw</strong>. Causó la destrucción de gran parte del centro histórico de Popayán, un patrimonio cultural invaluable.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 4: Conversión a Reto -->
+        <div class="slide" id="slide4">
+            <h2>Conversión del Problema a Reto</h2>
+            <h3>¿Cómo plantearían el problema como un reto?</h3>
+            <p>El reto es <strong>diseñar una página web interactiva</strong> que muestre en un mapa de Colombia los sismos en tiempo real, que permita consultar los terremotos históricos más importantes y que además dé la opción de simular un sismo indicando magnitud y epicentro para ver qué zonas serían afectadas.</p>
+            <p>Buscamos que la información sea más clara, educativa e interactiva para cualquier persona y no solo para los expertos.</p>
+        </div>
+
+        <!-- Diapositiva 5: Objetivo General -->
+        <div class="slide" id="slide5">
+            <h2>Objetivo General</h2>
+            <p style="font-size: 1.8em; max-width: 1000px;">
+                <strong>Diseñar una página web interactiva que permita visualizar en un mapa de Colombia los sismos en tiempo real, consultar información histórica de terremotos importantes y simular escenarios de impacto a partir de un epicentro y magnitud ingresada por el usuario.</strong>
+            </p>
+        </div>
+
+        <!-- Diapositiva 6: Objetivos Específicos -->
+        <div class="slide" id="slide6">
+            <h2>Objetivos Específicos</h2>
+            <ul>
+                <li>Integrar datos en tiempo real mediante una API de sismos.</li>
+                <li>Construir una base de datos con información de terremotos históricos de Colombia.</li>
+                <li>Desarrollar un mapa interactivo que muestre epicentros, magnitudes y fechas.</li>
+                <li>Permitir la simulación de sismos ficticios para observar su posible alcance.</li>
+                <li>Proporcionar información educativa sobre el riesgo sísmico y sus consecuencias.</li>
+            </ul>
+        </div>
+
+        <!-- Diapositiva 7: Justificación -->
+        <div class="slide" id="slide7">
+            <h2>Justificación Del Proyecto</h2>
+            <p>El proyecto se justifica en la necesidad de acercar la información sísmica a la población de manera clara, interactiva y educativa.</p>
+            <p>Diseñar una página web con un mapa interactivo permitirá a los usuarios consultar tanto los eventos en tiempo real como los terremotos históricos más importantes, y además simular escenarios.</p>
+            <p>Esta propuesta no solo tendrá un valor académico, sino que también aportará un <strong>valor social, al fomentar la conciencia y la prevención</strong> frente al riesgo sísmico en Colombia.</p>
+        </div>
+
+        <!-- Diapositiva 8: Metodología -->
+        <div class="slide" id="slide8">
+            <h2>Metodología</h2>
+            <ul>
+                <li><strong>Fase 1:</strong> Recolección de información (SGC, USGS, datos históricos).</li>
+                <li><strong>Fase 2:</strong> Diseño del sistema (diagramas de flujo, pseudocódigo).</li>
+                <li><strong>Fase 3:</strong> Desarrollo inicial (mapa con Leaflet.js, API de sismos, base de datos).</li>
+                <li><strong>Fase 4:</strong> Simulación (programar función de simulación de impacto).</li>
+                <li><strong>Fase 5:</strong> Pruebas (verificar datos reales y simulados).</li>
+                <li><strong>Fase 6:</strong> Presentación y mejoras futuras.</li>
+            </ul>
+        </div>
+
+        <!-- Diapositiva 9: Alcance -->
+        <div class="slide" id="slide9">
+            <h2>Alcance del Proyecto</h2>
+            <h3>El proyecto incluirá:</h3>
+            <ul>
+                <li>Mapa interactivo con epicentros.</li>
+                <li>Simulación básica de impacto según magnitud.</li>
+                <li>Fichas informativas de los principales terremotos históricos.</li>
+            </ul>
+            <h3>No contempla:</h3>
+            <ul>
+                <li>Predicciones sísmicas avanzadas.</li>
+                <li>Integración con sistemas oficiales de alerta temprana.</li>
+            </ul>
+        </div>
+
+        <!-- Diapositiva 10: Matriz DOFA -->
+        <div class="slide" id="slide10">
+            <h2>Análisis DOFA</h2>
+            <div class="dofa-container">
+                <div class="dofa-quadrant positive">
+                    <h3>Fortalezas</h3>
+                    <ul>
+                        <li>Proyecto innovador y atractivo.</li>
+                        <li>Utilidad real en Colombia.</li>
+                        <li>Escalabilidad a otros países.</li>
+                        <li>Interactividad desde la Fase 1.</li>
+                    </ul>
+                </div>
+                <div class="dofa-quadrant negative">
+                    <h3>Debilidades</h3>
+                    <ul>
+                        <li>Alto nivel de complejidad técnica.</li>
+                        <li>Riesgo en el tiempo de desarrollo.</li>
+                        <li>Curva de aprendizaje para nuevas librerías.</li>
+                    </ul>
+                </div>
+                <div class="dofa-quadrant positive">
+                    <h3>Oportunidades</h3>
+                    <ul>
+                        <li>Relevancia social (Armenia '99, Popayán '83).</li>
+                        <li>Apoyo institucional (datos abiertos SGC/USGS).</li>
+                        <li>Visibilidad académica y futura expansión.</li>
+                    </ul>
+                </div>
+                <div class="dofa-quadrant negative">
+                    <h3>Amenazas</h3>
+                    <ul>
+                        <li>Disponibilidad y calidad de los datos.</li>
+                        <li>Competencia de proyectos existentes.</li>
+                        <li>Sobrecarga académica del semestre.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Diapositiva 11: Conclusión -->
+        <div class="slide" id="slide11">
+            <h2>Conclusión</h2>
+            <p>El proyecto propone una herramienta innovadora que combina programación, geolocalización y datos históricos para crear conciencia sobre los riesgos sísmicos en Colombia.</p>
+            <p>Aunque en la primera fase será un prototipo básico, sienta las bases para una plataforma más avanzada que pueda ser útil tanto en educación como en gestión del riesgo.</p>
+        </div>
+
+    </div>
+
+    <!-- Navegación -->
+    <div class="nav-hint">Usa las flechas del teclado ← → para navegar</div>
+    <div class="slide-counter"><span id="current-slide">1</span> / <span id="total-slides">11</span></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const slides = document.querySelectorAll('.slide');
+            const currentSlideSpan = document.getElementById('current-slide');
+            const totalSlidesSpan = document.getElementById('total-slides');
+            let currentSlideIndex = 0;
+
+            totalSlidesSpan.textContent = slides.length;
+
+            function showSlide(index) {
+                slides.forEach(slide => slide.classList.remove('active'));
+                
+                if (index >= slides.length) {
+                    currentSlideIndex = 0;
+                } else if (index < 0) {
+                    currentSlideIndex = slides.length - 1;
+                } else {
+                    currentSlideIndex = index;
+                }
+
+                slides[currentSlideIndex].classList.add('active');
+                currentSlideSpan.textContent = currentSlideIndex + 1;
+            }
+
+            document.addEventListener('keydown', function(event) {
+                if (event.key === 'ArrowRight') {
+                    showSlide(currentSlideIndex + 1);
+                } else if (event.key === 'ArrowLeft') {
+                    showSlide(currentSlideIndex - 1);
+                }
+            });
+
+            showSlide(currentSlideIndex);
+        });
+    </script>
+
+</body>
+</html>

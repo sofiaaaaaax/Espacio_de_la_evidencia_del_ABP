@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapa Interactivo de Colombia</title>
+    <link rel="stylesheet" href="styles/SMapa.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>🇨🇴 Mapa Interactivo de Colombia - Simulador de Sismos</h1>
+        <p class="subtitle">Mueve el cursor sobre el mapa para ver las coordenadas y simula sismos</p>
+        
+        <div class="map-wrapper">
+            <div id="map"></div>
+            
+            <div class="coordinates-display">
+                <div><span class="coord-label">Latitud:</span> <span class="coord-value" id="lat">-</span></div>
+                <div><span class="coord-label">Longitud:</span> <span class="coord-value" id="lng">-</span></div>
+            </div>
+
+            <div class="controls-panel">
+                <h3>⚙️ Control de Sismos</h3>
+                
+                <div class="control-group">
+                    <label>Magnitud (Richter): <span class="value-display" id="mag-value">5.0</span></label>
+                    <input type="range" id="magnitude" min="1" max="9" step="0.1" value="5">
+                </div>
+
+                <div class="control-group">
+                    <label>Profundidad (km): <span class="value-display" id="depth-value">10</span></label>
+                    <input type="range" id="depth" min="0" max="700" step="10" value="10">
+                </div>
+
+                <div class="control-group">
+                    <label>Duración (seg):</label>
+                    <input type="number" id="duration" min="1" max="60" value="10">
+                </div>
+
+                <button class="btn btn-simulate" id="simulate-btn">🌋 Simular Sismo</button>
+                <button class="btn btn-stop" id="stop-btn">⏹️ Detener</button>
+            </div>
+        </div>
+
+        <div class="info-box">
+            <p><strong>💡 Instrucciones:</strong> Pasa el mouse sobre el mapa para ver las coordenadas geográficas.</p>
+            <p><strong>📍 Epicentro:</strong> Haz clic en cualquier punto del mapa para marcar el epicentro. El área roja muestra la zona afectada según la magnitud y profundidad.</p>
+            <p><strong>🎚️ Ajustes en tiempo real:</strong> Cambia la magnitud o profundidad para ver cómo se modifica el área afectada.</p>
+            <p><strong>🌋 Simulación:</strong> Presiona "Simular Sismo" para ver la propagación de ondas sísmicas.</p>
+            <p><strong>🔍 Zoom:</strong> Usa la rueda del mouse o los botones + / - para acercar o alejar el mapa.</p>
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" />
+    <script src="script/Mapalnit.js"></script>
+</body>
+</html>

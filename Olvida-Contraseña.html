@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recuperar Contraseña - Desastres Naturales</title>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css">
+  <link rel="stylesheet" href="Sismos1.css">
+  
+</head>
+<body>
+  <div class="card">
+    <h1>Recuperar Contraseña</h1>
+   
+    <form id="resetForm">
+      <div class="field">
+        <label for="email">Ingresa tu correo electrónico</label>
+        <div class="control">
+          <input class="input" type="email" id="email" name="email" placeholder="tu_correo@ejemplo.com" required>
+        </div>
+      </div>
+ 
+      <button class="button is-primary" type="submit">Enviar enlace de recuperación</button>
+      <div id="responseMessage" class="notification"></div>
+    </form>
+ 
+    <div class="footer-text">
+      <a href="Iniciar-Sesion.html">⬅ Volver al inicio de sesión</a>
+    </div>
+  </div>
+ 
+  <script>
+    const form = document.getElementById('resetForm');
+    const responseMessage = document.getElementById('responseMessage');
+ 
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const email = form.email.value.trim();
+
+      if (!email.match(/^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$/)) {
+        responseMessage.className = 'notification is-danger';
+        responseMessage.textContent = 'Por favor, ingresa un correo válido.';
+        responseMessage.style.display = 'block';
+        return;
+      }
+ 
+      responseMessage.className = 'notification is-info';
+      responseMessage.textContent = 'Enviando enlace de recuperación...';
+      responseMessage.style.display = 'block';
+ 
+      setTimeout(() => {
+        responseMessage.className = 'notification is-success';
+        responseMessage.textContent = `Se ha enviado un enlace de recuperación a ${email}.`;
+      }, 1500);
+    });
+  </script>
+</body>
+</html>
